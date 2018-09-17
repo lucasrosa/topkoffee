@@ -1,22 +1,42 @@
-import $ from "jquery";
+import React from "react";
+import ReactDOM from "react-dom";
+import RankBox from "./components/RankBox.js";
 
-$(document).ready(function(){
-	"use strict";
+const koffees = [
+  { name: "Felipe Braga", count:50},
+  { name: "Bruno Blazius", count:2},
+  { name: "Katreen Schmidt", count:534},
+  { name: "Giuseppe Fachio", count: 56},
+  { name: "Mateus Boeing", count:44},
+  { name: "Euler Junior", count:20},
+  { name: "Lucas Rosa", count:12}
+];
 
-	var window_width 	 = $(window).width(),
-	window_height 		 = window.innerHeight,
-	header_height 		 = $(".default-header").height(),
-	fitscreen 			 = window_height - header_height;
+const Index = () => {
+  return <div>Hello React!</div>;
+};
 
-	$(".fullscreen").css("height", window_height)
-	$(".fitscreen").css("height", fitscreen);
- 
-  // Header scroll class
-  $(window).scroll(function() {
-    if ($(this).scrollTop() > 100) {
-      $('#header').addClass('header-scrolled');
+ReactDOM.render(<RankBox />, document.getElementById("index"));
+
+// class HelloMessage extends React.Component {
+//   render() {
+//     return React.createElement(
+//       "div",
+//       null,
+//       "Hello ",
+//       this.props.name
+//     );
+//   }
+// };
+
+//ReactDOM.render(React.createElement(RankBox, { name: "Lucas Rosa" }), document.getElementById("index"));
+window.onload = function() {
+  window.addEventListener("scroll", function (event) {
+    let element = document.getElementById("header");
+    if (this.scrollY > 100) {
+      element.classList.add("header-scrolled");
     } else {
-      $('#header').removeClass('header-scrolled');
+      element.classList.remove("header-scrolled");
     }
-  });
- });
+  }); 
+}
