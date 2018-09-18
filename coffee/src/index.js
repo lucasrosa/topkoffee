@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import RankBox from "./components/RankBox.js";
+import Rank from "./components/Rank.js";
 
 const koffees = [
   { name: "Felipe Braga", count:50},
@@ -12,11 +13,8 @@ const koffees = [
   { name: "Lucas Rosa", count:12}
 ];
 
-const Index = () => {
-  return <div>Hello React!</div>;
-};
-
-ReactDOM.render(<RankBox />, document.getElementById("index"));
+// ranking receives koffess prop and renders many RankBoxes
+ReactDOM.render(React.createElement(Rank, { ranks: koffees }), document.getElementById("rank"));
 
 // class HelloMessage extends React.Component {
 //   render() {
