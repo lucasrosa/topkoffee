@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import RankBox from "./components/RankBox.js";
 import Rank from "./components/Rank.js";
 
 const koffees = [
@@ -13,21 +12,11 @@ const koffees = [
   { name: "Lucas Rosa", count:12}
 ];
 
-// ranking receives koffess prop and renders many RankBoxes
+// Ranking receives koffees prop and renders many RankBoxes
 ReactDOM.render(React.createElement(Rank, { ranks: koffees }), document.getElementById("rank"));
 
-// class HelloMessage extends React.Component {
-//   render() {
-//     return React.createElement(
-//       "div",
-//       null,
-//       "Hello ",
-//       this.props.name
-//     );
-//   }
-// };
 
-//ReactDOM.render(React.createElement(RankBox, { name: "Lucas Rosa" }), document.getElementById("index"));
+// Menu "animation"
 window.onload = function() {
   window.addEventListener("scroll", function (event) {
     let element = document.getElementById("header");
