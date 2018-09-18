@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Rank from "./components/Rank.js";
 
-const koffees = [
+var koffees = [
   { name: "Felipe Braga", count:50},
   { name: "Bruno Blazius", count:2},
   { name: "Katreen Schmidt", count:534},

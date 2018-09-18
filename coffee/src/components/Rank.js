@@ -7,13 +7,18 @@ export default class Rank extends Component {
         this.state = {};
         this.state.ranks = props.ranks;
     }
+
+    handleUpdate(ranks) {
+        this.setState({ranks: ranks});
+    }      
+
     render() {
         const ranks = this.state.ranks;
         // Sort the array
         ranks.sort((a, b) => b.count > a.count);
         // Create the boxes
-        const rankBoxes = ranks.map((rank) => 
-            <RankBox key={rank.count.toString()} name={rank.name} count={rank.count}/>
+        const rankBoxes = ranks.map((rank, index) => 
+            <RankBox key={index} position={index+1} name={rank.name} count={rank.count}/>
         );
         
         return (

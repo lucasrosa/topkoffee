@@ -2430,7 +2430,12 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .single-menu .title-div {
-  padding-bottom: 20px;
+  
+}
+
+.rank-position {
+  color:#b68834; 
+  font-size:40px;
 }
 
 .single-menu .price {

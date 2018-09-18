@@ -7,6 +7,7 @@ export default class RankBox extends Component {
                 <div className="col-lg-12">
                     <div className="single-menu">
                         <div className="title-div justify-content-between d-flex">
+                            <h1 className="rank-position">{this.props.position}</h1>
                             <h4>{this.props.name}</h4>
                             <p className="price float-right">
                                 {this.props.count}
