@@ -1,6 +1,27 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Rank from "./components/Rank.js";
+import './aws/Configuration';
+import Auth from '@aws-amplify/auth';
+
+Auth.currentAuthenticatedUser()
+    .then(user => console.log("We have this user signed:", user))
+    .catch(err => console.log("Sadly nobody is signed in :( :", err));
+
+// Auth.signUp({
+//   username: 'batmanrosaassa@gmail.com',
+//   password: 'MyCoolPassword1!',
+//   attributes: {
+//     name: 'Bruce Wayne'
+//   }
+// });
+
+
+// let username = "lucas.furlani.rosa@gmail.com";
+// let password = "abc123987";
+// Auth.signIn(username, password)
+//   .then(success => console.log('successful sign in'))
+//   .catch(err => console.log(err));
 
 var koffees = [
   { name: "Felipe Braga", count:50},
