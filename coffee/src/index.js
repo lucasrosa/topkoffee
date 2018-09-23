@@ -54,9 +54,9 @@ window.onload = function() {
     
     Auth.currentSession()
       .then(session => {
-        console.log(session);
+        
         let userToken = session.idToken.jwtToken;
-        console.log(userToken);
+        
         var requestHeaders = new Headers();
         requestHeaders.append('Content-Type', 'application/json');
         requestHeaders.append('Authorization', userToken);
@@ -65,9 +65,14 @@ window.onload = function() {
           method: 'POST',
           mode: 'cors',
           headers: requestHeaders
-        }).then(data => {
-          console.log(JSON.stringify(data));
-          koffeeCountedWithSuccess();
+        }).then(response => {
+          console.log(response.status == 201);
+          if (response.status == 201) {
+            koffeeCountedWithSuccess();
+          } else {
+            failToCountKoffee();
+          }
+          
         })
         .catch(error => console.error(error));  
       })
@@ -78,7 +83,13 @@ window.onload = function() {
     document.getElementById('koffeeCountingSpinner').classList.add("d-none");
     document.getElementById('koffeeSuccessCount').classList.remove("d-none");
     document.getElementById('koffeeSuccessButton').classList.remove("d-none");
-  } 
+  }
+  
+  function failToCountKoffee(){
+    document.getElementById('koffeeCountingSpinner').classList.add("d-none");
+    document.getElementById('koffeeFailureCount').classList.remove("d-none");
+    document.getElementById('koffeeFailureButton').classList.remove("d-none");
+  }
 
   var koffeeCountModal = new RModal(document.getElementById('koffeeCountModal'), {
     //content: 'Abracadabra',
@@ -86,6 +97,9 @@ window.onload = function() {
       countKoffee();        
     }
     // , escapeClose: true
+  });
+
+  var signupModal = new RModal(document.getElementById('signupModal'), {
   });
 
   var logInModal = new RModal(document.getElementById('logInModal'), {
@@ -202,11 +216,65 @@ window.onload = function() {
         document.getElementById('loginAlertMessage').classList.remove("d-none");
         //window.logInModal.close();
       });
+  }, false);
+
+
+  // Sign up button
+  document.getElementById('signupButton').addEventListener("click", function(ev) {
+    ev.preventDefault();
+    // Disable button
+    document.getElementById('signupButton').innerHTML = '<span class="fa fa-spinner fa-spin checked" style="font-size: 17px;"></span>';
+    disableButton(document, 'signupButton');
+    disableButton(document, 'cancelSignupButton');
+
+    disableInput('signupEmail');
+    disableInput('signupPassword');
+    disableInput('signupName');
+
+    let username = document.getElementById('signupEmail').value;
+    let password = document.getElementById('signupPassword').value;
+    let name = document.getElementById('signupName').value;
     
     
+    Auth.signUp(
+      {
+        username: username,
+        password: password,
+        attributes: {
+          name: name
+        }
+      }
+    )
+      .then(success => {
+        console.log('successful signup in');
+        enableButton(document, 'signupButton');
+        enableButton(document, 'cancelSignupButton');
+        enableInput('signupName');
+        enableInput('signupEmail');
+        enableInput('signupPassword');
+        window.signupModal.close();
+        document.getElementById('signupButton').innerHTML = "Sign up";
+        document.getElementById('signupAlertMessage').innerHTML = "";
+        document.getElementById('signupAlertMessage').classList.add("d-none");
+        setTimeout(function(){ 
+          logInModal.open();
+        }, 1000);
+      })
+      .catch(err => {
+        console.log(err);
+        enableButton(document, 'signupButton');
+        enableInput('signupName');
+        enableInput('signupEmail');
+        enableInput('signupPassword');
+        enableButton(document, 'cancelSignupButton');
+        document.getElementById('signupButton').innerHTML = "Sign up";
+        document.getElementById('signupAlertMessage').innerHTML = err.message;
+        document.getElementById('signupAlertMessage').classList.remove("d-none");
+        //window.logInModal.close();
+      });
+  }, false);
 
-}, false);
-
+  window.signupModal = signupModal;
   window.logInModal = logInModal;
   window.koffeeCountModal = koffeeCountModal;
 }

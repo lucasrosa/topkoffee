@@ -224,7 +224,8 @@ Copyright &copy; Lucas Rosa - <script>document.write(new Date().getFullYear());<
 				</div>
 			</footer>	
 			<!-- End footer Area -->
-			<!-- Modal area -->		
+			<!-- Modal area -->	
+			<!-- Log in modal-->	
 			<div id="logInModal" class="modal">
 				<div class="modal-dialog animated">
 					<div class="modal-content single-menu" style="padding:0px;">
@@ -265,7 +266,47 @@ Copyright &copy; Lucas Rosa - <script>document.write(new Date().getFullYear());<
 					</div>
 				</div>
 			</div>
-
+			<!-- Sign up modal-->
+			<div id="signupModal" class="modal">
+				<div class="modal-dialog animated">
+					<div class="modal-content single-menu" style="padding:0px;">
+						<form class="form-horizontal" method="get">
+							<div class="modal-header">
+								<strong>Sign up to Top Koffee</strong>
+							</div>
+		
+							<div class="modal-body">
+								<div class="form-group">
+									<label for="name" class="control-label col-xs-4">Name</label>
+									<div class="input-group col-xs-7">
+										<input type="text" name="name" id="signupName" class="single-input" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="email" class="control-label col-xs-4">E-mail</label>
+									<div class="input-group col-xs-7">
+										<input type="email" name="email" id="signupEmail" class="single-input" />
+									</div>
+								</div>	
+								<div class="form-group">
+									<label for="password" class="control-label col-xs-4">Password</label>
+									<div class="input-group col-xs-7">
+										<input type="password" name="password" id="signupPassword" class="single-input" />
+									</div>
+								</div>
+								<div id="signupAlertMessage" class="alert alert-warning d-none" role="alert">
+									
+								</div>
+							</div>			
+							<div class="modal-footer">
+								<button id="cancelSignupButton" class="genric-btn default circle" type="button" onclick="signupModal.close();">Cancel</button>
+								<button id="signupButton" class="genric-btn info circle" type="submit">Sign up</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<!-- Coffe Count Modal-->
 			<div id="koffeeCountModal" class="modal">
 					<div class="modal-dialog animated">
 						<div class="modal-content single-menu" style="padding:0px;">
@@ -281,12 +322,22 @@ Copyright &copy; Lucas Rosa - <script>document.write(new Date().getFullYear());<
 									<div id="koffeeSuccessCount" class="form-group d-none">
 										<div class="alert alert-success" role="alert">
 											<h4 class="alert-heading">Well done!</h4>
-											<p>Your coffee was counted with success!</p>
+											<p>Your coffee was counted with success :)</p>
+										</div>
+									</div>
+
+									<div id="koffeeFailureCount" class="form-group d-none">
+										<div class="alert alert-warning" role="alert">
+											<h4 class="alert-heading">Dang it!</h4>
+											<p>Your coffee could not be counted :(</p>
 										</div>
 									</div>
 								</div>
 								<div id="koffeeSuccessButton" class="modal-footer d-none">
 									<button class="genric-btn info circle" type="submit">Yay!</button>
+								</div>
+								<div id="koffeeFailureButton" class="modal-footer d-none">
+									<button class="genric-btn info circle" type="submit">I will try again later</button>
 								</div>			
 							</form>
 						</div>
