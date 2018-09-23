@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import Rank from "./components/Rank.js";
 import './aws/Configuration';
 import Auth from '@aws-amplify/auth';
+import RModal from 'rmodal';
 
 Auth.currentAuthenticatedUser()
     .then(user => console.log("We have this user signed:", user))
@@ -37,6 +38,7 @@ var koffees = [
 ReactDOM.render(React.createElement(Rank, { ranks: koffees }), document.getElementById("rank"));
 
 
+
 // Menu "animation"
 window.onload = function() {
   window.addEventListener("scroll", function (event) {
@@ -47,4 +49,44 @@ window.onload = function() {
       element.classList.remove("header-scrolled");
     }
   }); 
+
+  var modal = new RModal(document.getElementById('logInModal'), {
+    //content: 'Abracadabra',
+    beforeOpen: function(next) {
+        console.log('beforeOpen');
+        next();
+    }
+    , afterOpen: function() {
+        console.log('opened');
+    }
+
+    , beforeClose: function(next) {
+        console.log('beforeClose');
+        next();
+    }
+    , afterClose: function() {
+        console.log('closed');
+    }
+    // , bodyClass: 'modal-open'
+    // , dialogClass: 'modal-dialog'
+    // , dialogOpenClass: 'animated fadeIn'
+    // , dialogCloseClass: 'animated fadeOut'
+
+    // , focus: true
+    // , focusElements: ['input.form-control', 'textarea', 'button.btn-primary']
+
+    // , escapeClose: true
+  });
+
+  document.addEventListener('keydown', function(ev) {
+      modal.keydown(ev);
+  }, false);
+
+  document.getElementById('showModal').addEventListener("click", function(ev) {
+      ev.preventDefault();
+      modal.open();
+  }, false);
+
+  window.modal = modal;
+
 }

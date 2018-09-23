@@ -28,6 +28,7 @@
 			<link rel="stylesheet" href="css/animate.min.css">
 			<link rel="stylesheet" href="css/owl.carousel.css">
 			<link rel="stylesheet" href="css/main.css">
+			
 		</head>
 		<body>
 
@@ -49,8 +50,7 @@
 				      </div>		    		
 			    	</div>
 			    </div>
-			  </header><!-- #header -->
-
+			  </header><!-- #header -->		  
 
 			<!-- start banner Area -->
 			<section class="banner-area" id="home">	
@@ -62,13 +62,13 @@
 								Did you make Coffee <br>
 								today?				
 							</h1>
-							<a href="#" class="primary-btn text-uppercase">Yes!</a>
+							<a id="showModal" href="#" class="primary-btn text-uppercase">Yes!</a>
 						</div>											
 					</div>
 				</div>
 			</section>
 			<!-- End banner Area -->	
-
+			<div id="modalera"></div>
 			<!-- Start video-sec Area -->
 			<section class="video-sec-area pb-100 pt-40" id="about">
 				<div class="container">
@@ -215,7 +215,46 @@ Copyright &copy; Lucas Rosa - <script>document.write(new Date().getFullYear());<
 					</div>
 				</div>
 			</footer>	
-			<!-- End footer Area -->			
+			<!-- End footer Area -->
+			<!-- Modal area -->		
+			<div id="logInModal" class="modal">
+				<div class="modal-dialog animated">
+					<div class="modal-content single-menu" style="padding:0px;">
+						<form class="form-horizontal" method="get">
+							<div class="modal-header">
+								<strong>Log in</strong>
+							</div>
+		
+							<div class="modal-body">
+								<div class="form-group">
+									<label for="email" class="control-label col-xs-4">E-mail</label>
+									<div class="input-group col-xs-7">
+										<input type="email" name="email" id="email" class="single-input" />
+									</div>
+									<div class="form-group">
+											<label for="password" class="control-label col-xs-4">Password</label>
+											<div class="input-group col-xs-7">
+												<input type="password" name="password" id="password" class="single-input" />
+											</div>
+										</div>
+								</div>
+								<div class="switch-wrap d-flex justify-content-between">
+									<p>Keep me logged in</p>
+									<div class="confirm-switch">
+										<input type="checkbox" id="confirm-switch" checked>
+										<label for="confirm-switch"></label>
+									</div>
+								</div>
+							</div>			
+							<div class="modal-footer">
+								<button class="genric-btn default circle" type="button" onclick="modal.close();">Cancel</button>
+								<button class="genric-btn info circle" type="submit" onclick="modal.close();">Log in</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>	
+			<!-- End modal area -->
 			
 			<script src="main.js"></script>
 		</body>
