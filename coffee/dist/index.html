@@ -36,9 +36,12 @@
 				<div class="header-top">
 		  			<div class="container">
 				  		<div class="row justify-content-end">
-				  			<div style="height:15px;">
-				  				
-				  			</div>
+								<div class="col-lg-8 col-sm-4 col-8 header-top-right no-padding">
+								<ul>
+									<li>
+									</li>			  					
+								</ul>
+							</div>
 				  		</div>			  					
 		  			</div>
 				</div>			  	
@@ -47,7 +50,12 @@
 				      <div id="logo">
 						<!--<a href="index.html"><img src="img/logo.png" alt="" title="" /></a>-->
 						<h3 style="color:white;">Top Koffee</h3>
-				      </div>		    		
+					  </div>
+					  <nav id="nav-menu-container">
+						<ul class="nav-menu sf-js-enabled sf-arrows" style="touch-action: pan-y;">
+							<li><a id="signOutButton" class="d-none" href="#">Sign out</a></li>
+						</ul>
+						</nav>		    		
 			    	</div>
 			    </div>
 			  </header><!-- #header -->		  
@@ -222,19 +230,19 @@ Copyright &copy; Lucas Rosa - <script>document.write(new Date().getFullYear());<
 					<div class="modal-content single-menu" style="padding:0px;">
 						<form class="form-horizontal" method="get">
 							<div class="modal-header">
-								<strong>Log in</strong>
+								<strong>To count your coffee, you must sign in:</strong>
 							</div>
 		
 							<div class="modal-body">
 								<div class="form-group">
 									<label for="email" class="control-label col-xs-4">E-mail</label>
 									<div class="input-group col-xs-7">
-										<input type="email" name="email" id="email" class="single-input" />
+										<input type="email" name="email" id="loginEmail" class="single-input" />
 									</div>
 									<div class="form-group">
 											<label for="password" class="control-label col-xs-4">Password</label>
 											<div class="input-group col-xs-7">
-												<input type="password" name="password" id="password" class="single-input" />
+												<input type="password" name="password" id="loginPassword" class="single-input" />
 											</div>
 										</div>
 								</div>
@@ -245,15 +253,45 @@ Copyright &copy; Lucas Rosa - <script>document.write(new Date().getFullYear());<
 										<label for="confirm-switch"></label>
 									</div>
 								</div>
+								<div id="loginAlertMessage" class="alert alert-warning d-none" role="alert">
+									
+								</div>
 							</div>			
 							<div class="modal-footer">
-								<button class="genric-btn default circle" type="button" onclick="modal.close();">Cancel</button>
-								<button class="genric-btn info circle" type="submit" onclick="modal.close();">Log in</button>
+								<button id="cancelLoginButton" class="genric-btn default circle" type="button" onclick="logInModal.close();">Cancel</button>
+								<button id="loginButton" class="genric-btn info circle" type="submit">Log in</button>
 							</div>
 						</form>
 					</div>
 				</div>
-			</div>	
+			</div>
+
+			<div id="koffeeCountModal" class="modal">
+					<div class="modal-dialog animated">
+						<div class="modal-content single-menu" style="padding:0px;">
+							<form class="form-horizontal" method="get">
+								<div class="modal-header">
+									<strong>Counting your coffee!</strong>
+								</div>
+			
+								<div class="modal-body">
+									<div id="koffeeCountingSpinner" class="form-group text-center">
+										<span class="fa fa-spinner fa-spin checked" style="font-size: 55px;"></span>
+									</div>
+									<div id="koffeeSuccessCount" class="form-group d-none">
+										<div class="alert alert-success" role="alert">
+											<h4 class="alert-heading">Well done!</h4>
+											<p>Your coffee was counted with success!</p>
+										</div>
+									</div>
+								</div>
+								<div id="koffeeSuccessButton" class="modal-footer d-none">
+									<button class="genric-btn info circle" type="submit">Yay!</button>
+								</div>			
+							</form>
+						</div>
+					</div>
+				</div>	
 			<!-- End modal area -->
 			
 			<script src="main.js"></script>

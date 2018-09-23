@@ -5,10 +5,6 @@ import './aws/Configuration';
 import Auth from '@aws-amplify/auth';
 import RModal from 'rmodal';
 
-Auth.currentAuthenticatedUser()
-    .then(user => console.log("We have this user signed:", user))
-    .catch(err => console.log("Sadly nobody is signed in :( :", err));
-
 // Auth.signUp({
 //   username: 'batmanrosaassa@gmail.com',
 //   password: 'MyCoolPassword1!',
@@ -16,7 +12,9 @@ Auth.currentAuthenticatedUser()
 //     name: 'Bruce Wayne'
 //   }
 // });
-
+// Auth.signOut()
+//     .then(data => console.log(data))
+//     .catch(err => console.log(err));
 
 // let username = "lucas.furlani.rosa@gmail.com";
 // let password = "abc123987";
@@ -41,6 +39,7 @@ ReactDOM.render(React.createElement(Rank, { ranks: koffees }), document.getEleme
 
 // Menu "animation"
 window.onload = function() {
+
   window.addEventListener("scroll", function (event) {
     let element = document.getElementById("header");
     if (this.scrollY > 100) {
@@ -48,16 +47,55 @@ window.onload = function() {
     } else {
       element.classList.remove("header-scrolled");
     }
-  }); 
+  });
 
-  var modal = new RModal(document.getElementById('logInModal'), {
+  function countKoffee() {
+    //Auth.currentSession().then(session => {console.log("session", session);}).catch(error => console.error(error));
+    
+    Auth.currentSession()
+      .then(session => {
+        console.log(session);
+        let userToken = session.idToken.jwtToken;
+        console.log(userToken);
+        var requestHeaders = new Headers();
+        requestHeaders.append('Content-Type', 'application/json');
+        requestHeaders.append('Authorization', userToken);
+
+        fetch('https://igbelcdck7.execute-api.us-east-1.amazonaws.com/production/koffee', {
+          method: 'POST',
+          mode: 'cors',
+          headers: requestHeaders
+        }).then(data => {
+          console.log(JSON.stringify(data));
+          koffeeCountedWithSuccess();
+        })
+        .catch(error => console.error(error));  
+      })
+      .catch(err => console.log(err));  
+  }
+
+  function koffeeCountedWithSuccess(){
+    document.getElementById('koffeeCountingSpinner').classList.add("d-none");
+    document.getElementById('koffeeSuccessCount').classList.remove("d-none");
+    document.getElementById('koffeeSuccessButton').classList.remove("d-none");
+  } 
+
+  var koffeeCountModal = new RModal(document.getElementById('koffeeCountModal'), {
+    //content: 'Abracadabra',
+    afterOpen: function() {
+      countKoffee();        
+    }
+    // , escapeClose: true
+  });
+
+  var logInModal = new RModal(document.getElementById('logInModal'), {
     //content: 'Abracadabra',
     beforeOpen: function(next) {
         console.log('beforeOpen');
         next();
     }
     , afterOpen: function() {
-        console.log('opened');
+        console.log('opened');        
     }
 
     , beforeClose: function(next) {
@@ -79,14 +117,96 @@ window.onload = function() {
   });
 
   document.addEventListener('keydown', function(ev) {
-      modal.keydown(ev);
+    logInModal.keydown(ev);
   }, false);
 
   document.getElementById('showModal').addEventListener("click", function(ev) {
       ev.preventDefault();
-      modal.open();
+      Auth.currentAuthenticatedUser()
+      .then(user => koffeeCountModal.open())
+      .catch(err => logInModal.open());
+      
   }, false);
 
-  window.modal = modal;
+  function disableButton(_document, id){
+    _document.getElementById(id).classList.add("disable");
+    _document.getElementById(id).setAttribute("disabled","");
+  }
 
+  function enableButton(_document, id){
+    _document.getElementById(id).classList.remove("disable");
+    _document.getElementById(id).removeAttribute("disabled");
+  }
+
+  function disableInput(id) {
+    document.getElementById(id).setAttribute("disabled", "");
+  }
+
+  function enableInput(id) {
+    document.getElementById(id).removeAttribute("disabled");
+  }
+
+  Auth.currentAuthenticatedUser()
+      .then(user => {
+        document.getElementById('signOutButton').classList.remove('d-none');
+      })
+      .catch(err => console.log("User not signed in."));
+
+  // Log out button
+  document.getElementById('signOutButton').addEventListener("click", function(ev) {
+    ev.preventDefault();
+    Auth.signOut()
+      .then(data => document.getElementById('signOutButton').classList.add('d-none'))
+      .catch(err => console.log(err));
+  });
+
+  // Log in button
+  document.getElementById('loginButton').addEventListener("click", function(ev) {
+    ev.preventDefault();
+    // Disable button
+    document.getElementById('loginButton').innerHTML = '<span class="fa fa-spinner fa-spin checked" style="font-size: 17px;"></span>';
+    disableButton(document, 'loginButton');
+    disableButton(document, 'cancelLoginButton');
+
+    disableInput('loginEmail');
+    disableInput('loginPassword');
+
+    let username = document.getElementById('loginEmail').value;
+    let password = document.getElementById('loginPassword').value;
+    
+    
+    Auth.signIn(username, password)
+      .then(success => {
+        console.log('successful sign in');
+        document.getElementById('signOutButton').classList.remove('d-none');
+        enableButton(document, 'loginButton');
+        enableButton(document, 'cancelLoginButton');
+        enableInput('loginEmail');
+        enableInput('loginPassword');
+        window.logInModal.close();
+        document.getElementById('loginButton').innerHTML = "Log in";
+        document.getElementById('loginAlertMessage').innerHTML = "";
+        document.getElementById('loginAlertMessage').classList.add("d-none");
+        setTimeout(function(){ 
+          koffeeCountModal.open();
+        }, 1000);
+      })
+      .catch(err => {
+        console.log(err);
+        enableButton(document, 'loginButton');
+        enableInput('loginEmail');
+        enableInput('loginPassword');
+        enableButton(document, 'cancelLoginButton');
+        document.getElementById('loginButton').innerHTML = "Log in";
+        document.getElementById('loginAlertMessage').innerHTML = err.message;
+        document.getElementById('loginAlertMessage').classList.remove("d-none");
+        //window.logInModal.close();
+      });
+    
+    
+
+}, false);
+
+  window.logInModal = logInModal;
+  window.koffeeCountModal = koffeeCountModal;
 }
