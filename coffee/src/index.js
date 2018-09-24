@@ -99,8 +99,8 @@ window.onload = function() {
     // , escapeClose: true
   });
 
-  var signupModal = new RModal(document.getElementById('signupModal'), {
-  });
+  var signupModal = new RModal(document.getElementById('signupModal'), {});
+  var confirmationModal = new RModal(document.getElementById('confirmationModal'), {});
 
   var logInModal = new RModal(document.getElementById('logInModal'), {
     //content: 'Abracadabra',
@@ -201,9 +201,10 @@ window.onload = function() {
         document.getElementById('loginButton').innerHTML = "Log in";
         document.getElementById('loginAlertMessage').innerHTML = "";
         document.getElementById('loginAlertMessage').classList.add("d-none");
+        document.getElementById('accountConfirmedWithSuccessMessage').classList.add("d-none");
         setTimeout(function(){ 
           koffeeCountModal.open();
-        }, 1000);
+        }, 500);
       })
       .catch(err => {
         console.log(err);
@@ -257,8 +258,8 @@ window.onload = function() {
         document.getElementById('signupAlertMessage').innerHTML = "";
         document.getElementById('signupAlertMessage').classList.add("d-none");
         setTimeout(function(){ 
-          logInModal.open();
-        }, 1000);
+          confirmationModal.open();
+        }, 500);
       })
       .catch(err => {
         console.log(err);
@@ -274,6 +275,51 @@ window.onload = function() {
       });
   }, false);
 
+  // Confirm account button
+  document.getElementById('confirmAccountButton').addEventListener("click", function(ev) {
+    ev.preventDefault();
+    // Disable button
+    document.getElementById('confirmAccountButton').innerHTML = '<span class="fa fa-spinner fa-spin checked" style="font-size: 17px;"></span>';
+    disableButton(document, 'confirmAccountButton');
+
+    disableInput('confirmationCode');
+
+    let confirmationCode = document.getElementById('confirmationCode').value;
+    let username = document.getElementById('signupEmail').value;
+    
+    Auth.confirmSignUp(username, confirmationCode)
+      .then(success => {
+        console.log('successful confirmation of account');
+        enableButton(document, 'confirmAccountButton');
+        enableInput('confirmationCode');
+        window.confirmationModal.close();
+        document.getElementById('confirmAccountButton').innerHTML = "Confirm";
+        document.getElementById('confirmationFailed').classList.add("d-none");
+        document.getElementById('accountConfirmedWithSuccessMessage').classList.remove("d-none");
+        setTimeout(function(){ 
+          logInModal.open();
+        }, 500);
+      })
+      .catch(err => {
+        console.log(err);
+        enableButton(document, 'confirmAccountButton');
+        enableInput('confirmationCode');
+        document.getElementById('confirmAccountButton').innerHTML = "Confirm";
+        document.getElementById('confirmationFailedMessage').innerHTML = err.message;
+        document.getElementById('confirmationFailed').classList.remove("d-none");
+        //window.logInModal.close();
+      });
+  }, false);
+
+  document.getElementById('signupLink').addEventListener("click", function(ev) {
+    ev.preventDefault();
+    logInModal.close();
+    setTimeout(function(){ 
+      signupModal.open();
+    }, 500);
+  });
+
+  window.confirmationModal = confirmationModal;
   window.signupModal = signupModal;
   window.logInModal = logInModal;
   window.koffeeCountModal = koffeeCountModal;
